@@ -19,5 +19,7 @@ function [oTimestamp, times, v]=readSensorsInFolder(filenamesToRead, sFolderPath
     end
     fclose(fid_1);
     oTimestamp=w(:, 1);
-    v=values;
+    %v=values;
+    v(:,1)=values;
+    v(:,2)=values;
 end
