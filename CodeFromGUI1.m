@@ -24,7 +24,7 @@ classdef GUI1 < matlab.apps.AppBase
         MaxAField                 matlab.ui.control.NumericEditField
         MaxVEditFieldLabel        matlab.ui.control.Label
         MaxVField                 matlab.ui.control.NumericEditField
-        AhMaxVWhEditFieldLabel    matlab.ui.control.Label
+        AhMaxVWhLabel             matlab.ui.control.Label
         AhMaxVWhField             matlab.ui.control.NumericEditField
         EnergyusedfromVolWhLabel  matlab.ui.control.Label
         EnergyVolField            matlab.ui.control.NumericEditField
@@ -257,11 +257,11 @@ classdef GUI1 < matlab.apps.AppBase
             app.MaxVField.Editable = 'off';
             app.MaxVField.Position = [242 374 49 22];
 
-            % Create AhMaxVWhEditFieldLabel
-            app.AhMaxVWhEditFieldLabel = uilabel(app.UIFigure);
-            app.AhMaxVWhEditFieldLabel.HorizontalAlignment = 'right';
-            app.AhMaxVWhEditFieldLabel.Position = [1 374 89 22];
-            app.AhMaxVWhEditFieldLabel.Text = '[Ah*MaxV=Wh]';
+            % Create AhMaxVWhLabel
+            app.AhMaxVWhLabel = uilabel(app.UIFigure);
+            app.AhMaxVWhLabel.HorizontalAlignment = 'right';
+            app.AhMaxVWhLabel.Position = [1 374 93 22];
+            app.AhMaxVWhLabel.Text = '[Ah*Max[V]=Wh]';
 
             % Create AhMaxVWhField
             app.AhMaxVWhField = uieditfield(app.UIFigure, 'numeric');
