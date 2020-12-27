@@ -1,14 +1,13 @@
 function [oTimestamp, times, v]=readSensorsInFolder(filenamesToRead, sFolderPath)
     %filenamesToRead = ["_TEL_HVBMS_CURR.txt", "_TEL_HVBMS_MAXCVOLT.txt", "_TEL_HVBMS_MINCVOLT.txt"];
-    %sFolderPath='/home/jacek/Dokumenty/Matlab/Testy LEM MotoPark/lem_logi_motopark_30102020/20201030_092123662678_decoded';
     %sFolderPath='/home/jacek/Dokumenty/Matlab/Testy LEM MotoPark/lem_logi_motopark_30102020/20201030_100139001723_decoded';
     firstFileName = erase(sFolderPath, '_decoded')
     %get first part of folder name
-    firstFileName = reverse(extractBetween(reverse(firstFileName), 1, '/'))
+    firstFileName = reverse(extractBetween(reverse(firstFileName), 1, filesep)) %filesep returns '/' on Linux and '\' on Windows
     %filenamesToRead %check if it was passed correctly
-    %strcat(sFolderPath, '/', firstFileName, filenamesToRead(1)) %check if file path was stripped correctly
+    %strcat(sFolderPath, filesep, firstFileName, filenamesToRead(1)) %check if file path was stripped correctly
     for i=1:length(filenamesToRead)
-        fid_1 = fopen(strcat(sFolderPath, '/', firstFileName, filenamesToRead(i)), 'r');
+        fid_1 = fopen(strcat(sFolderPath, filesep, firstFileName, filenamesToRead(i)), 'r');
         c=fscanf(fid_1, '%c');
         w=splitlines(c);
         w=split(w(1:(length(w)-1)));
