@@ -187,12 +187,14 @@ classdef GUI1 < matlab.apps.AppBase
             app.TimesLabel = uilabel(app.UIFigure);
             app.TimesLabel.BackgroundColor = [1 1 1];
             app.TimesLabel.HorizontalAlignment = 'right';
+            app.TimesLabel.FontColor = [0 0.4471 0.7412];
             app.TimesLabel.Position = [8 649 50 22];
             app.TimesLabel.Text = 'Time [s]';
 
             % Create TimeField
             app.TimeField = uieditfield(app.UIFigure, 'numeric');
             app.TimeField.Editable = 'off';
+            app.TimeField.FontColor = [0 0.4471 0.7412];
             app.TimeField.Position = [61 649 48 22];
 
             % Create Label
@@ -209,110 +211,129 @@ classdef GUI1 < matlab.apps.AppBase
             % Create EnergyusedfromVmaxWhEditFieldLabel
             app.EnergyusedfromVmaxWhEditFieldLabel = uilabel(app.UIFigure);
             app.EnergyusedfromVmaxWhEditFieldLabel.HorizontalAlignment = 'right';
-            app.EnergyusedfromVmaxWhEditFieldLabel.Position = [11 558 161 23];
+            app.EnergyusedfromVmaxWhEditFieldLabel.FontColor = [0.9294 0.6941 0.1255];
+            app.EnergyusedfromVmaxWhEditFieldLabel.Position = [12 558 161 23];
             app.EnergyusedfromVmaxWhEditFieldLabel.Text = 'Energy used from Vmax [Wh]';
 
             % Create EnergyVmaxField
             app.EnergyVmaxField = uieditfield(app.UIFigure, 'numeric');
             app.EnergyVmaxField.ValueDisplayFormat = '%7.2f';
             app.EnergyVmaxField.Editable = 'off';
-            app.EnergyVmaxField.Position = [180 559 110 22];
+            app.EnergyVmaxField.FontColor = [0.9294 0.6941 0.1255];
+            app.EnergyVmaxField.Position = [181 559 110 22];
 
             % Create AvgpowerfromVmaxWLabel
             app.AvgpowerfromVmaxWLabel = uilabel(app.UIFigure);
             app.AvgpowerfromVmaxWLabel.HorizontalAlignment = 'right';
-            app.AvgpowerfromVmaxWLabel.Position = [12 530 146 22];
+            app.AvgpowerfromVmaxWLabel.FontColor = [0.502 0.502 0.502];
+            app.AvgpowerfromVmaxWLabel.Position = [12 528 146 22];
             app.AvgpowerfromVmaxWLabel.Text = 'Avg power from Vmax [W]';
 
             % Create AvgPowerVmaxField
             app.AvgPowerVmaxField = uieditfield(app.UIFigure, 'numeric');
             app.AvgPowerVmaxField.ValueDisplayFormat = '%7.2f';
             app.AvgPowerVmaxField.Editable = 'off';
-            app.AvgPowerVmaxField.Position = [182 530 109 22];
+            app.AvgPowerVmaxField.FontColor = [0.502 0.502 0.502];
+            app.AvgPowerVmaxField.Position = [182 528 109 22];
 
             % Create PeakpowerfromVmaxWEditFieldLabel
             app.PeakpowerfromVmaxWEditFieldLabel = uilabel(app.UIFigure);
             app.PeakpowerfromVmaxWEditFieldLabel.HorizontalAlignment = 'right';
-            app.PeakpowerfromVmaxWEditFieldLabel.Position = [11 499 151 22];
+            app.PeakpowerfromVmaxWEditFieldLabel.FontColor = [1 0 0];
+            app.PeakpowerfromVmaxWEditFieldLabel.Position = [11 498 151 22];
             app.PeakpowerfromVmaxWEditFieldLabel.Text = 'Peak power from Vmax [W]';
 
             % Create PeakPowerVmaxField
             app.PeakPowerVmaxField = uieditfield(app.UIFigure, 'numeric');
             app.PeakPowerVmaxField.ValueDisplayFormat = '%7.2f';
             app.PeakPowerVmaxField.Editable = 'off';
-            app.PeakPowerVmaxField.Position = [181 499 110 22];
+            app.PeakPowerVmaxField.FontColor = [1 0 0];
+            app.PeakPowerVmaxField.Position = [181 498 110 22];
 
             % Create AhEditFieldLabel
             app.AhEditFieldLabel = uilabel(app.UIFigure);
             app.AhEditFieldLabel.HorizontalAlignment = 'right';
+            app.AhEditFieldLabel.FontColor = [0.9294 0.6941 0.1255];
             app.AhEditFieldLabel.Position = [11 619 29 22];
             app.AhEditFieldLabel.Text = '[Ah]';
 
             % Create AhField
             app.AhField = uieditfield(app.UIFigure, 'numeric');
             app.AhField.Editable = 'off';
+            app.AhField.FontColor = [0.9294 0.6941 0.1255];
             app.AhField.Position = [111 619 70 22];
 
             % Create MaxAEditFieldLabel
             app.MaxAEditFieldLabel = uilabel(app.UIFigure);
             app.MaxAEditFieldLabel.HorizontalAlignment = 'right';
-            app.MaxAEditFieldLabel.Position = [179 619 47 22];
+            app.MaxAEditFieldLabel.FontColor = [1 0 0];
+            app.MaxAEditFieldLabel.Position = [191 619 47 22];
             app.MaxAEditFieldLabel.Text = 'Max [A]';
 
             % Create MaxAField
             app.MaxAField = uieditfield(app.UIFigure, 'numeric');
             app.MaxAField.Editable = 'off';
-            app.MaxAField.Position = [241 619 50 22];
+            app.MaxAField.FontColor = [1 0 0];
+            app.MaxAField.Position = [253 619 38 22];
 
             % Create MaxVEditFieldLabel
             app.MaxVEditFieldLabel = uilabel(app.UIFigure);
             app.MaxVEditFieldLabel.HorizontalAlignment = 'right';
-            app.MaxVEditFieldLabel.Position = [180 589 47 22];
+            app.MaxVEditFieldLabel.FontColor = [1 0 0];
+            app.MaxVEditFieldLabel.Position = [191 589 47 22];
             app.MaxVEditFieldLabel.Text = 'Max [V]';
 
             % Create MaxVField
             app.MaxVField = uieditfield(app.UIFigure, 'numeric');
             app.MaxVField.Editable = 'off';
-            app.MaxVField.Position = [242 589 49 22];
+            app.MaxVField.FontColor = [1 0 0];
+            app.MaxVField.Position = [253 589 38 22];
 
             % Create AhMaxVWhLabel
             app.AhMaxVWhLabel = uilabel(app.UIFigure);
             app.AhMaxVWhLabel.HorizontalAlignment = 'right';
+            app.AhMaxVWhLabel.FontColor = [1 0.4118 0.1608];
             app.AhMaxVWhLabel.Position = [11 589 93 22];
             app.AhMaxVWhLabel.Text = '[Ah*Max[V]=Wh]';
 
             % Create AhMaxVWhField
             app.AhMaxVWhField = uieditfield(app.UIFigure, 'numeric');
             app.AhMaxVWhField.Editable = 'off';
+            app.AhMaxVWhField.FontColor = [1 0.4118 0.1608];
             app.AhMaxVWhField.Position = [111 589 69 22];
 
             % Create EnergyusedfromVolWhLabel
             app.EnergyusedfromVolWhLabel = uilabel(app.UIFigure);
             app.EnergyusedfromVolWhLabel.HorizontalAlignment = 'right';
-            app.EnergyusedfromVolWhLabel.Position = [11 468 150 23];
+            app.EnergyusedfromVolWhLabel.FontColor = [0.9294 0.6941 0.1255];
+            app.EnergyusedfromVolWhLabel.Position = [11 467 150 23];
             app.EnergyusedfromVolWhLabel.Text = 'Energy used from Vol [Wh]';
 
             % Create EnergyVolField
             app.EnergyVolField = uieditfield(app.UIFigure, 'numeric');
             app.EnergyVolField.ValueDisplayFormat = '%7.2f';
             app.EnergyVolField.Editable = 'off';
-            app.EnergyVolField.Position = [181 469 109 22];
+            app.EnergyVolField.FontColor = [0.9294 0.6941 0.1255];
+            app.EnergyVolField.Position = [181 468 109 22];
 
             % Create AvgpowerfromVolWLabel
             app.AvgpowerfromVolWLabel = uilabel(app.UIFigure);
             app.AvgpowerfromVolWLabel.HorizontalAlignment = 'right';
-            app.AvgpowerfromVolWLabel.Position = [11 439 133 22];
+            app.AvgpowerfromVolWLabel.FontColor = [0.502 0.502 0.502];
+            app.AvgpowerfromVolWLabel.Position = [11 438 133 22];
             app.AvgpowerfromVolWLabel.Text = 'Avg power from Vol [W]';
 
             % Create AvgPowerVolField
             app.AvgPowerVolField = uieditfield(app.UIFigure, 'numeric');
             app.AvgPowerVolField.ValueDisplayFormat = '%7.2f';
             app.AvgPowerVolField.Editable = 'off';
-            app.AvgPowerVolField.Position = [181 439 110 22];
+            app.AvgPowerVolField.FontColor = [0.502 0.502 0.502];
+            app.AvgPowerVolField.Position = [181 438 110 22];
 
             % Create PeakpowerfromVolWLabel
             app.PeakpowerfromVolWLabel = uilabel(app.UIFigure);
             app.PeakpowerfromVolWLabel.HorizontalAlignment = 'right';
+            app.PeakpowerfromVolWLabel.FontColor = [1 0 0];
             app.PeakpowerfromVolWLabel.Position = [11 409 139 22];
             app.PeakpowerfromVolWLabel.Text = 'Peak power from Vol [W]';
 
@@ -320,22 +341,26 @@ classdef GUI1 < matlab.apps.AppBase
             app.PeakPowerVolField = uieditfield(app.UIFigure, 'numeric');
             app.PeakPowerVolField.ValueDisplayFormat = '%7.2f';
             app.PeakPowerVolField.Editable = 'off';
+            app.PeakPowerVolField.FontColor = [1 0 0];
             app.PeakPowerVolField.Position = [181 409 110 22];
 
             % Create StabilisedVoltagesButton
             app.StabilisedVoltagesButton = uibutton(app.UIFigure, 'push');
             app.StabilisedVoltagesButton.ButtonPushedFcn = createCallbackFcn(app, @StabilisedVoltagesButtonPushed, true);
-            app.StabilisedVoltagesButton.Position = [301 646 118 25];
+            app.StabilisedVoltagesButton.FontColor = [0.502 0.502 0.502];
+            app.StabilisedVoltagesButton.Position = [321 646 118 25];
             app.StabilisedVoltagesButton.Text = 'Stabilised Voltages';
 
             % Create CellResistancemOEditFieldLabel
             app.CellResistancemOEditFieldLabel = uilabel(app.UIFigure);
             app.CellResistancemOEditFieldLabel.HorizontalAlignment = 'right';
+            app.CellResistancemOEditFieldLabel.FontColor = [0.502 0.502 0.502];
             app.CellResistancemOEditFieldLabel.Position = [118 649 108 22];
             app.CellResistancemOEditFieldLabel.Text = 'Cell Resistance mO';
 
             % Create CellResistancemOEditField
             app.CellResistancemOEditField = uieditfield(app.UIFigure, 'numeric');
+            app.CellResistancemOEditField.FontColor = [0.502 0.502 0.502];
             app.CellResistancemOEditField.Position = [241 649 50 22];
             app.CellResistancemOEditField.Value = 30;
 
@@ -343,7 +368,7 @@ classdef GUI1 < matlab.apps.AppBase
             app.RecoveredWhEditFieldLabel_3 = uilabel(app.UIFigure);
             app.RecoveredWhEditFieldLabel_3.HorizontalAlignment = 'right';
             app.RecoveredWhEditFieldLabel_3.FontColor = [0.4667 0.6745 0.1882];
-            app.RecoveredWhEditFieldLabel_3.Position = [301 469 91 22];
+            app.RecoveredWhEditFieldLabel_3.Position = [321 469 91 22];
             app.RecoveredWhEditFieldLabel_3.Text = 'Recovered [Wh]';
 
             % Create RecoveredWhVolField
@@ -351,13 +376,13 @@ classdef GUI1 < matlab.apps.AppBase
             app.RecoveredWhVolField.ValueDisplayFormat = '%7.2f';
             app.RecoveredWhVolField.Editable = 'off';
             app.RecoveredWhVolField.FontColor = [0.4667 0.6745 0.1882];
-            app.RecoveredWhVolField.Position = [407 469 74 22];
+            app.RecoveredWhVolField.Position = [427 469 54 22];
 
             % Create RecoveredWhEditFieldLabel_4
             app.RecoveredWhEditFieldLabel_4 = uilabel(app.UIFigure);
             app.RecoveredWhEditFieldLabel_4.HorizontalAlignment = 'right';
             app.RecoveredWhEditFieldLabel_4.FontColor = [0.4667 0.6745 0.1882];
-            app.RecoveredWhEditFieldLabel_4.Position = [301 559 91 22];
+            app.RecoveredWhEditFieldLabel_4.Position = [321 559 91 22];
             app.RecoveredWhEditFieldLabel_4.Text = 'Recovered [Wh]';
 
             % Create RecoveredWhVMaxField
@@ -365,7 +390,7 @@ classdef GUI1 < matlab.apps.AppBase
             app.RecoveredWhVMaxField.ValueDisplayFormat = '%7.2f';
             app.RecoveredWhVMaxField.Editable = 'off';
             app.RecoveredWhVMaxField.FontColor = [0.4667 0.6745 0.1882];
-            app.RecoveredWhVMaxField.Position = [407 559 74 22];
+            app.RecoveredWhVMaxField.Position = [427 559 54 22];
 
             % Create AxesFullData
             app.AxesFullData = uiaxes(app.UIFigure);
