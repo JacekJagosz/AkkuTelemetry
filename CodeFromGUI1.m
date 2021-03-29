@@ -2,39 +2,42 @@ classdef GUI1 < matlab.apps.AppBase
 
     % Properties that correspond to app components
     properties (Access = public)
-        UIFigure                  matlab.ui.Figure
-        SliderLabel               matlab.ui.control.Label
-        Slider                    matlab.ui.control.Slider
-        Slider_2Label             matlab.ui.control.Label
-        Slider_2                  matlab.ui.control.Slider
-        ChoosefolderButton        matlab.ui.control.Button
-        TimesLabel                matlab.ui.control.Label
-        TimeField                 matlab.ui.control.NumericEditField
-        Label                     matlab.ui.control.Label
-        FilePath                  matlab.ui.control.EditField
+        UIFigure                        matlab.ui.Figure
+        SliderLabel                     matlab.ui.control.Label
+        Slider                          matlab.ui.control.Slider
+        Slider_2Label                   matlab.ui.control.Label
+        Slider_2                        matlab.ui.control.Slider
+        ChoosefolderButton              matlab.ui.control.Button
+        TimesLabel                      matlab.ui.control.Label
+        TimeField                       matlab.ui.control.NumericEditField
+        Label                           matlab.ui.control.Label
+        FilePath                        matlab.ui.control.EditField
         EnergyusedfromVmaxWhEditFieldLabel  matlab.ui.control.Label
-        EnergyVmaxField           matlab.ui.control.NumericEditField
-        AvgpowerfromVmaxWLabel    matlab.ui.control.Label
-        AvgPowerVmaxField         matlab.ui.control.NumericEditField
+        EnergyVmaxField                 matlab.ui.control.NumericEditField
+        AvgpowerfromVmaxWLabel          matlab.ui.control.Label
+        AvgPowerVmaxField               matlab.ui.control.NumericEditField
         PeakpowerfromVmaxWEditFieldLabel  matlab.ui.control.Label
-        PeakPowerVmaxField        matlab.ui.control.NumericEditField
-        AhEditFieldLabel          matlab.ui.control.Label
-        AhField                   matlab.ui.control.NumericEditField
-        MaxAEditFieldLabel        matlab.ui.control.Label
-        MaxAField                 matlab.ui.control.NumericEditField
-        MaxVEditFieldLabel        matlab.ui.control.Label
-        MaxVField                 matlab.ui.control.NumericEditField
-        AhMaxVWhLabel             matlab.ui.control.Label
-        AhMaxVWhField             matlab.ui.control.NumericEditField
-        EnergyusedfromVolWhLabel  matlab.ui.control.Label
-        EnergyVolField            matlab.ui.control.NumericEditField
-        AvgpowerfromVolWLabel     matlab.ui.control.Label
-        AvgPowerVolField          matlab.ui.control.NumericEditField
-        PeakpowerfromVolWLabel    matlab.ui.control.Label
-        PeakPowerVolField         matlab.ui.control.NumericEditField
-        AxesFullData              matlab.ui.control.UIAxes
-        AxesChosenData            matlab.ui.control.UIAxes
-        AxesVoltages              matlab.ui.control.UIAxes
+        PeakPowerVmaxField              matlab.ui.control.NumericEditField
+        AhEditFieldLabel                matlab.ui.control.Label
+        AhField                         matlab.ui.control.NumericEditField
+        MaxAEditFieldLabel              matlab.ui.control.Label
+        MaxAField                       matlab.ui.control.NumericEditField
+        MaxVEditFieldLabel              matlab.ui.control.Label
+        MaxVField                       matlab.ui.control.NumericEditField
+        AhMaxVWhLabel                   matlab.ui.control.Label
+        AhMaxVWhField                   matlab.ui.control.NumericEditField
+        EnergyusedfromVolWhLabel        matlab.ui.control.Label
+        EnergyVolField                  matlab.ui.control.NumericEditField
+        AvgpowerfromVolWLabel           matlab.ui.control.Label
+        AvgPowerVolField                matlab.ui.control.NumericEditField
+        PeakpowerfromVolWLabel          matlab.ui.control.Label
+        PeakPowerVolField               matlab.ui.control.NumericEditField
+        StabilisedVoltagesButton        matlab.ui.control.Button
+        CellResistancemOEditFieldLabel  matlab.ui.control.Label
+        CellResistancemOEditField       matlab.ui.control.NumericEditField
+        AxesFullData                    matlab.ui.control.UIAxes
+        AxesChosenData                  matlab.ui.control.UIAxes
+        AxesVoltages                    matlab.ui.control.UIAxes
     end
 
     
@@ -124,6 +127,14 @@ classdef GUI1 < matlab.apps.AppBase
             end
             updatePlotsAndCalculations(app)
         end
+
+        % Button pushed function: StabilisedVoltagesButton
+        function StabilisedVoltagesButtonPushed(app, event)
+            hold(app.AxesVoltages, 'on')
+            akuResistance=app.CellResistancemOEditField.Value/1000/17;
+            plot(app.AxesVoltages, app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,2:3)+app.val(app.Slider.Value:app.Slider_2.Value,1)*akuResistance);
+            hold(app.AxesVoltages, 'off')
+        end
     end
 
     % Component initialization
@@ -134,175 +145,193 @@ classdef GUI1 < matlab.apps.AppBase
 
             % Create UIFigure and hide until all components are created
             app.UIFigure = uifigure('Visible', 'off');
-            app.UIFigure.Position = [100 100 610 505];
+            app.UIFigure.Position = [100 100 1000 720];
             app.UIFigure.Name = 'MATLAB App';
+            app.UIFigure.Pointer = 'crosshair';
 
             % Create SliderLabel
             app.SliderLabel = uilabel(app.UIFigure);
             app.SliderLabel.HorizontalAlignment = 'right';
-            app.SliderLabel.Position = [311 284 25 22];
+            app.SliderLabel.Position = [501 489 25 22];
             app.SliderLabel.Text = '';
 
             % Create Slider
             app.Slider = uislider(app.UIFigure);
             app.Slider.ValueChangedFcn = createCallbackFcn(app, @SliderValueChanged, true);
-            app.Slider.Position = [357 293 238 3];
+            app.Slider.Position = [547 498 438 3];
 
             % Create Slider_2Label
             app.Slider_2Label = uilabel(app.UIFigure);
             app.Slider_2Label.HorizontalAlignment = 'right';
-            app.Slider_2Label.Position = [311 240 25 22];
+            app.Slider_2Label.Position = [501 439 25 22];
             app.Slider_2Label.Text = '';
 
             % Create Slider_2
             app.Slider_2 = uislider(app.UIFigure);
             app.Slider_2.ValueChangedFcn = createCallbackFcn(app, @Slider_2ValueChanged, true);
-            app.Slider_2.Position = [357 249 239 3];
+            app.Slider_2.Position = [547 448 439 3];
 
             % Create ChoosefolderButton
             app.ChoosefolderButton = uibutton(app.UIFigure, 'push');
             app.ChoosefolderButton.ButtonPushedFcn = createCallbackFcn(app, @ChoosefolderButtonPushed, true);
-            app.ChoosefolderButton.Position = [22 467 97 25];
+            app.ChoosefolderButton.Position = [22 682 97 25];
             app.ChoosefolderButton.Text = 'Choose folder';
 
             % Create TimesLabel
             app.TimesLabel = uilabel(app.UIFigure);
             app.TimesLabel.BackgroundColor = [1 1 1];
             app.TimesLabel.HorizontalAlignment = 'right';
-            app.TimesLabel.Position = [8 434 50 22];
+            app.TimesLabel.Position = [8 649 50 22];
             app.TimesLabel.Text = 'Time [s]';
 
             % Create TimeField
             app.TimeField = uieditfield(app.UIFigure, 'numeric');
             app.TimeField.Editable = 'off';
-            app.TimeField.Position = [61 434 48 22];
+            app.TimeField.Position = [61 649 48 22];
 
             % Create Label
             app.Label = uilabel(app.UIFigure);
             app.Label.HorizontalAlignment = 'right';
-            app.Label.Position = [127 469 25 22];
+            app.Label.Position = [127 684 25 22];
             app.Label.Text = '';
 
             % Create FilePath
             app.FilePath = uieditfield(app.UIFigure, 'text');
             app.FilePath.Editable = 'off';
-            app.FilePath.Position = [126 469 168 22];
+            app.FilePath.Position = [126 684 360 22];
 
             % Create EnergyusedfromVmaxWhEditFieldLabel
             app.EnergyusedfromVmaxWhEditFieldLabel = uilabel(app.UIFigure);
             app.EnergyusedfromVmaxWhEditFieldLabel.HorizontalAlignment = 'right';
-            app.EnergyusedfromVmaxWhEditFieldLabel.Position = [11 343 161 23];
+            app.EnergyusedfromVmaxWhEditFieldLabel.Position = [11 558 161 23];
             app.EnergyusedfromVmaxWhEditFieldLabel.Text = 'Energy used from Vmax [Wh]';
 
             % Create EnergyVmaxField
             app.EnergyVmaxField = uieditfield(app.UIFigure, 'numeric');
             app.EnergyVmaxField.ValueDisplayFormat = '%7.2f';
             app.EnergyVmaxField.Editable = 'off';
-            app.EnergyVmaxField.Position = [180 344 110 22];
+            app.EnergyVmaxField.Position = [180 559 110 22];
 
             % Create AvgpowerfromVmaxWLabel
             app.AvgpowerfromVmaxWLabel = uilabel(app.UIFigure);
             app.AvgpowerfromVmaxWLabel.HorizontalAlignment = 'right';
-            app.AvgpowerfromVmaxWLabel.Position = [12 315 146 22];
+            app.AvgpowerfromVmaxWLabel.Position = [12 530 146 22];
             app.AvgpowerfromVmaxWLabel.Text = 'Avg power from Vmax [W]';
 
             % Create AvgPowerVmaxField
             app.AvgPowerVmaxField = uieditfield(app.UIFigure, 'numeric');
             app.AvgPowerVmaxField.ValueDisplayFormat = '%7.2f';
             app.AvgPowerVmaxField.Editable = 'off';
-            app.AvgPowerVmaxField.Position = [182 315 109 22];
+            app.AvgPowerVmaxField.Position = [182 530 109 22];
 
             % Create PeakpowerfromVmaxWEditFieldLabel
             app.PeakpowerfromVmaxWEditFieldLabel = uilabel(app.UIFigure);
             app.PeakpowerfromVmaxWEditFieldLabel.HorizontalAlignment = 'right';
-            app.PeakpowerfromVmaxWEditFieldLabel.Position = [11 284 151 22];
+            app.PeakpowerfromVmaxWEditFieldLabel.Position = [11 499 151 22];
             app.PeakpowerfromVmaxWEditFieldLabel.Text = 'Peak power from Vmax [W]';
 
             % Create PeakPowerVmaxField
             app.PeakPowerVmaxField = uieditfield(app.UIFigure, 'numeric');
             app.PeakPowerVmaxField.ValueDisplayFormat = '%7.2f';
             app.PeakPowerVmaxField.Editable = 'off';
-            app.PeakPowerVmaxField.Position = [181 284 110 22];
+            app.PeakPowerVmaxField.Position = [181 499 110 22];
 
             % Create AhEditFieldLabel
             app.AhEditFieldLabel = uilabel(app.UIFigure);
             app.AhEditFieldLabel.HorizontalAlignment = 'right';
-            app.AhEditFieldLabel.Position = [1 404 29 22];
+            app.AhEditFieldLabel.Position = [11 619 29 22];
             app.AhEditFieldLabel.Text = '[Ah]';
 
             % Create AhField
             app.AhField = uieditfield(app.UIFigure, 'numeric');
             app.AhField.Editable = 'off';
-            app.AhField.Position = [111 404 70 22];
+            app.AhField.Position = [111 619 70 22];
 
             % Create MaxAEditFieldLabel
             app.MaxAEditFieldLabel = uilabel(app.UIFigure);
             app.MaxAEditFieldLabel.HorizontalAlignment = 'right';
-            app.MaxAEditFieldLabel.Position = [179 404 47 22];
+            app.MaxAEditFieldLabel.Position = [179 619 47 22];
             app.MaxAEditFieldLabel.Text = 'Max [A]';
 
             % Create MaxAField
             app.MaxAField = uieditfield(app.UIFigure, 'numeric');
             app.MaxAField.Editable = 'off';
-            app.MaxAField.Position = [241 404 50 22];
+            app.MaxAField.Position = [241 619 50 22];
 
             % Create MaxVEditFieldLabel
             app.MaxVEditFieldLabel = uilabel(app.UIFigure);
             app.MaxVEditFieldLabel.HorizontalAlignment = 'right';
-            app.MaxVEditFieldLabel.Position = [180 374 47 22];
+            app.MaxVEditFieldLabel.Position = [180 589 47 22];
             app.MaxVEditFieldLabel.Text = 'Max [V]';
 
             % Create MaxVField
             app.MaxVField = uieditfield(app.UIFigure, 'numeric');
             app.MaxVField.Editable = 'off';
-            app.MaxVField.Position = [242 374 49 22];
+            app.MaxVField.Position = [242 589 49 22];
 
             % Create AhMaxVWhLabel
             app.AhMaxVWhLabel = uilabel(app.UIFigure);
             app.AhMaxVWhLabel.HorizontalAlignment = 'right';
-            app.AhMaxVWhLabel.Position = [1 374 93 22];
+            app.AhMaxVWhLabel.Position = [11 589 93 22];
             app.AhMaxVWhLabel.Text = '[Ah*Max[V]=Wh]';
 
             % Create AhMaxVWhField
             app.AhMaxVWhField = uieditfield(app.UIFigure, 'numeric');
             app.AhMaxVWhField.Editable = 'off';
-            app.AhMaxVWhField.Position = [111 374 69 22];
+            app.AhMaxVWhField.Position = [111 589 69 22];
 
             % Create EnergyusedfromVolWhLabel
             app.EnergyusedfromVolWhLabel = uilabel(app.UIFigure);
             app.EnergyusedfromVolWhLabel.HorizontalAlignment = 'right';
-            app.EnergyusedfromVolWhLabel.Position = [11 253 150 23];
+            app.EnergyusedfromVolWhLabel.Position = [11 468 150 23];
             app.EnergyusedfromVolWhLabel.Text = 'Energy used from Vol [Wh]';
 
             % Create EnergyVolField
             app.EnergyVolField = uieditfield(app.UIFigure, 'numeric');
             app.EnergyVolField.ValueDisplayFormat = '%7.2f';
             app.EnergyVolField.Editable = 'off';
-            app.EnergyVolField.Position = [181 254 109 22];
+            app.EnergyVolField.Position = [181 469 109 22];
 
             % Create AvgpowerfromVolWLabel
             app.AvgpowerfromVolWLabel = uilabel(app.UIFigure);
             app.AvgpowerfromVolWLabel.HorizontalAlignment = 'right';
-            app.AvgpowerfromVolWLabel.Position = [11 224 133 22];
+            app.AvgpowerfromVolWLabel.Position = [11 439 133 22];
             app.AvgpowerfromVolWLabel.Text = 'Avg power from Vol [W]';
 
             % Create AvgPowerVolField
             app.AvgPowerVolField = uieditfield(app.UIFigure, 'numeric');
             app.AvgPowerVolField.ValueDisplayFormat = '%7.2f';
             app.AvgPowerVolField.Editable = 'off';
-            app.AvgPowerVolField.Position = [181 224 110 22];
+            app.AvgPowerVolField.Position = [181 439 110 22];
 
             % Create PeakpowerfromVolWLabel
             app.PeakpowerfromVolWLabel = uilabel(app.UIFigure);
             app.PeakpowerfromVolWLabel.HorizontalAlignment = 'right';
-            app.PeakpowerfromVolWLabel.Position = [11 194 139 22];
+            app.PeakpowerfromVolWLabel.Position = [11 409 139 22];
             app.PeakpowerfromVolWLabel.Text = 'Peak power from Vol [W]';
 
             % Create PeakPowerVolField
             app.PeakPowerVolField = uieditfield(app.UIFigure, 'numeric');
             app.PeakPowerVolField.ValueDisplayFormat = '%7.2f';
             app.PeakPowerVolField.Editable = 'off';
-            app.PeakPowerVolField.Position = [181 194 110 22];
+            app.PeakPowerVolField.Position = [181 409 110 22];
+
+            % Create StabilisedVoltagesButton
+            app.StabilisedVoltagesButton = uibutton(app.UIFigure, 'push');
+            app.StabilisedVoltagesButton.ButtonPushedFcn = createCallbackFcn(app, @StabilisedVoltagesButtonPushed, true);
+            app.StabilisedVoltagesButton.Position = [301 646 118 25];
+            app.StabilisedVoltagesButton.Text = 'Stabilised Voltages';
+
+            % Create CellResistancemOEditFieldLabel
+            app.CellResistancemOEditFieldLabel = uilabel(app.UIFigure);
+            app.CellResistancemOEditFieldLabel.HorizontalAlignment = 'right';
+            app.CellResistancemOEditFieldLabel.Position = [118 649 108 22];
+            app.CellResistancemOEditFieldLabel.Text = 'Cell Resistance mO';
+
+            % Create CellResistancemOEditField
+            app.CellResistancemOEditField = uieditfield(app.UIFigure, 'numeric');
+            app.CellResistancemOEditField.Position = [241 649 50 22];
+            app.CellResistancemOEditField.Value = 30;
 
             % Create AxesFullData
             app.AxesFullData = uiaxes(app.UIFigure);
@@ -310,7 +339,7 @@ classdef GUI1 < matlab.apps.AppBase
             xlabel(app.AxesFullData, 'Time [ms]')
             ylabel(app.AxesFullData, '[A]')
             zlabel(app.AxesFullData, 'Z')
-            app.AxesFullData.Position = [311 321 300 185];
+            app.AxesFullData.Position = [501 511 500 210];
 
             % Create AxesChosenData
             app.AxesChosenData = uiaxes(app.UIFigure);
@@ -318,7 +347,7 @@ classdef GUI1 < matlab.apps.AppBase
             xlabel(app.AxesChosenData, 'Time [ms]')
             ylabel(app.AxesChosenData, '[A]')
             zlabel(app.AxesChosenData, 'Z')
-            app.AxesChosenData.Position = [311 1 300 185];
+            app.AxesChosenData.Position = [501 1 500 400];
 
             % Create AxesVoltages
             app.AxesVoltages = uiaxes(app.UIFigure);
@@ -326,7 +355,7 @@ classdef GUI1 < matlab.apps.AppBase
             xlabel(app.AxesVoltages, 'Time [ms]')
             ylabel(app.AxesVoltages, '[V]')
             zlabel(app.AxesVoltages, 'Z')
-            app.AxesVoltages.Position = [1 1 300 185];
+            app.AxesVoltages.Position = [1 1 500 400];
 
             % Show the figure after all components are created
             app.UIFigure.Visible = 'on';
