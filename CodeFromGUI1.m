@@ -35,6 +35,10 @@ classdef GUI1 < matlab.apps.AppBase
         StabilisedVoltagesButton        matlab.ui.control.Button
         CellResistancemOEditFieldLabel  matlab.ui.control.Label
         CellResistancemOEditField       matlab.ui.control.NumericEditField
+        RecoveredWhEditFieldLabel_3     matlab.ui.control.Label
+        RecoveredWhVolField             matlab.ui.control.NumericEditField
+        RecoveredWhEditFieldLabel_4     matlab.ui.control.Label
+        RecoveredWhVMaxField            matlab.ui.control.NumericEditField
         AxesFullData                    matlab.ui.control.UIAxes
         AxesChosenData                  matlab.ui.control.UIAxes
         AxesVoltages                    matlab.ui.control.UIAxes
@@ -63,18 +67,20 @@ classdef GUI1 < matlab.apps.AppBase
                 hold(app.AxesVoltages, 'on')
                 plot(app.AxesVoltages, app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,4)/102)
                 hold(app.AxesVoltages, 'off')
-                [wv, pv]=calculateEnergy(app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,1), app.val(app.Slider.Value:app.Slider_2.Value,4));
+                [wv, pv, rv]=calculateEnergy(app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,1), app.val(app.Slider.Value:app.Slider_2.Value,4));
                 app.EnergyVolField.Value=wv;
                 app.PeakPowerVolField.Value=pv;
+                app.RecoveredWhVolField.Value=102*rv;
                 app.AvgPowerVolField.Value=app.EnergyVolField.Value/app.TimeField.Value*3600;
             end
             %calculate energies
             [app.AhField.Value, app.MaxAField.Value]=calculateCurrent(app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,1));
             app.MaxVField.Value=max(app.val(app.Slider.Value:app.Slider_2.Value, 2));
             app.AhMaxVWhField.Value=app.AhField.Value*app.MaxVField.Value*102;
-            [wm, pm]=calculateEnergy(app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,1), app.val(app.Slider.Value:app.Slider_2.Value,2));
+            [wm, pm, rm]=calculateEnergy(app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,1), app.val(app.Slider.Value:app.Slider_2.Value,2));
             app.EnergyVmaxField.Value=102*wm;
             app.PeakPowerVmaxField.Value=102*pm;
+            app.RecoveredWhVMaxField.Value=102*rm;
             app.AvgPowerVmaxField.Value=app.EnergyVmaxField.Value/app.TimeField.Value*3600;
         end
     end
@@ -332,6 +338,34 @@ classdef GUI1 < matlab.apps.AppBase
             app.CellResistancemOEditField = uieditfield(app.UIFigure, 'numeric');
             app.CellResistancemOEditField.Position = [241 649 50 22];
             app.CellResistancemOEditField.Value = 30;
+
+            % Create RecoveredWhEditFieldLabel_3
+            app.RecoveredWhEditFieldLabel_3 = uilabel(app.UIFigure);
+            app.RecoveredWhEditFieldLabel_3.HorizontalAlignment = 'right';
+            app.RecoveredWhEditFieldLabel_3.FontColor = [0.4667 0.6745 0.1882];
+            app.RecoveredWhEditFieldLabel_3.Position = [301 469 91 22];
+            app.RecoveredWhEditFieldLabel_3.Text = 'Recovered [Wh]';
+
+            % Create RecoveredWhVolField
+            app.RecoveredWhVolField = uieditfield(app.UIFigure, 'numeric');
+            app.RecoveredWhVolField.ValueDisplayFormat = '%7.2f';
+            app.RecoveredWhVolField.Editable = 'off';
+            app.RecoveredWhVolField.FontColor = [0.4667 0.6745 0.1882];
+            app.RecoveredWhVolField.Position = [407 469 74 22];
+
+            % Create RecoveredWhEditFieldLabel_4
+            app.RecoveredWhEditFieldLabel_4 = uilabel(app.UIFigure);
+            app.RecoveredWhEditFieldLabel_4.HorizontalAlignment = 'right';
+            app.RecoveredWhEditFieldLabel_4.FontColor = [0.4667 0.6745 0.1882];
+            app.RecoveredWhEditFieldLabel_4.Position = [301 559 91 22];
+            app.RecoveredWhEditFieldLabel_4.Text = 'Recovered [Wh]';
+
+            % Create RecoveredWhVMaxField
+            app.RecoveredWhVMaxField = uieditfield(app.UIFigure, 'numeric');
+            app.RecoveredWhVMaxField.ValueDisplayFormat = '%7.2f';
+            app.RecoveredWhVMaxField.Editable = 'off';
+            app.RecoveredWhVMaxField.FontColor = [0.4667 0.6745 0.1882];
+            app.RecoveredWhVMaxField.Position = [407 559 74 22];
 
             % Create AxesFullData
             app.AxesFullData = uiaxes(app.UIFigure);
