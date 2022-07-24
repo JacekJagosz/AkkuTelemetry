@@ -3,57 +3,62 @@ classdef GUI1 < matlab.apps.AppBase
     % Properties that correspond to app components
     properties (Access = public)
         UIFigure                        matlab.ui.Figure
-        SliderLabel                     matlab.ui.control.Label
-        Slider                          matlab.ui.control.Slider
-        Slider_2Label                   matlab.ui.control.Label
-        Slider_2                        matlab.ui.control.Slider
-        ChoosefolderButton              matlab.ui.control.Button
-        TimesLabel                      matlab.ui.control.Label
-        TimeField                       matlab.ui.control.NumericEditField
-        Label                           matlab.ui.control.Label
-        FilePath                        matlab.ui.control.EditField
-        EnergyusedfromVmaxWhEditFieldLabel  matlab.ui.control.Label
-        EnergyVmaxField                 matlab.ui.control.NumericEditField
-        AvgpowerfromVmaxWLabel          matlab.ui.control.Label
-        AvgPowerVmaxField               matlab.ui.control.NumericEditField
-        PeakpowerfromVmaxWEditFieldLabel  matlab.ui.control.Label
-        PeakPowerVmaxField              matlab.ui.control.NumericEditField
-        AhEditFieldLabel                matlab.ui.control.Label
-        AhField                         matlab.ui.control.NumericEditField
-        MaxAEditFieldLabel              matlab.ui.control.Label
-        MaxAField                       matlab.ui.control.NumericEditField
-        MaxVEditFieldLabel              matlab.ui.control.Label
-        MaxVField                       matlab.ui.control.NumericEditField
-        AhMaxVWhLabel                   matlab.ui.control.Label
-        AhMaxVWhField                   matlab.ui.control.NumericEditField
-        EnergyusedfromVolWhLabel        matlab.ui.control.Label
-        EnergyVolField                  matlab.ui.control.NumericEditField
-        AvgpowerfromVolWLabel           matlab.ui.control.Label
-        AvgPowerVolField                matlab.ui.control.NumericEditField
-        PeakpowerfromVolWLabel          matlab.ui.control.Label
-        PeakPowerVolField               matlab.ui.control.NumericEditField
-        StabilisedVoltagesButton        matlab.ui.control.Button
-        CellResistancemOEditFieldLabel  matlab.ui.control.Label
-        CellResistancemOEditField       matlab.ui.control.NumericEditField
-        RecoveredWhEditFieldLabel_3     matlab.ui.control.Label
-        RecoveredWhVolField             matlab.ui.control.NumericEditField
-        RecoveredWhEditFieldLabel_4     matlab.ui.control.Label
+        ProducedHeatFieldW              matlab.ui.control.NumericEditField
+        HeatWLabel                      matlab.ui.control.Label
+        ProducedHeatField               matlab.ui.control.NumericEditField
+        HeatJLabel                      matlab.ui.control.Label
+        CalculateProducedHeatButton     matlab.ui.control.Button
         RecoveredWhVMaxField            matlab.ui.control.NumericEditField
-        AxesFullData                    matlab.ui.control.UIAxes
-        AxesChosenData                  matlab.ui.control.UIAxes
+        RecoveredWhEditFieldLabel_4     matlab.ui.control.Label
+        RecoveredWhVolField             matlab.ui.control.NumericEditField
+        RecoveredWhEditFieldLabel_3     matlab.ui.control.Label
+        CellResistancemOEditField       matlab.ui.control.NumericEditField
+        CellResistancemOEditFieldLabel  matlab.ui.control.Label
+        StabilisedVoltagesButton        matlab.ui.control.Button
+        PeakPowerVolField               matlab.ui.control.NumericEditField
+        PeakpowerfromVolWLabel          matlab.ui.control.Label
+        AvgPowerVolField                matlab.ui.control.NumericEditField
+        AvgpowerfromVolWLabel           matlab.ui.control.Label
+        EnergyVolField                  matlab.ui.control.NumericEditField
+        EnergyusedfromVolWhLabel        matlab.ui.control.Label
+        AhMaxVWhField                   matlab.ui.control.NumericEditField
+        AhMaxVWhLabel                   matlab.ui.control.Label
+        MaxVField                       matlab.ui.control.NumericEditField
+        MaxVEditFieldLabel              matlab.ui.control.Label
+        MaxAField                       matlab.ui.control.NumericEditField
+        MaxAEditFieldLabel              matlab.ui.control.Label
+        AhField                         matlab.ui.control.NumericEditField
+        AhEditFieldLabel                matlab.ui.control.Label
+        PeakPowerVmaxField              matlab.ui.control.NumericEditField
+        PeakpowerfromVmaxWEditFieldLabel  matlab.ui.control.Label
+        AvgPowerVmaxField               matlab.ui.control.NumericEditField
+        AvgpowerfromVmaxWLabel          matlab.ui.control.Label
+        EnergyVmaxField                 matlab.ui.control.NumericEditField
+        EnergyusedfromVmaxWhEditFieldLabel  matlab.ui.control.Label
+        FilePath                        matlab.ui.control.EditField
+        Label                           matlab.ui.control.Label
+        TimeField                       matlab.ui.control.NumericEditField
+        TimesLabel                      matlab.ui.control.Label
+        ChoosefolderButton              matlab.ui.control.Button
+        Slider_2                        matlab.ui.control.Slider
+        Slider_2Label                   matlab.ui.control.Label
+        Slider                          matlab.ui.control.Slider
+        SliderLabel                     matlab.ui.control.Label
         AxesVoltages                    matlab.ui.control.UIAxes
+        AxesChosenData                  matlab.ui.control.UIAxes
+        AxesFullData                    matlab.ui.control.UIAxes
     end
 
-    
+
     properties (Access = private)
         filenamesToRead = ["_TEL_HVBMS_CURR.txt", "_TEL_HVBMS_MAXCVOLT.txt", "_TEL_HVBMS_MINCVOLT.txt", "_TEL_HVBMS_VOLT.txt"]% Files with what endings that need to be read, in that order
         sFolderPath%='/home/jacek/Dokumenty/Matlab/Testy LEM MotoPark/lem_logi_motopark_30102020/20201030_092123662678_decoded' % Initial value set for quick testing on my PC only
         val % contains values read from sensors and converted to double, in order of filenamesToRead
         times % time of each datapoint, converted to miliseconds
     end
-    
+
     methods (Access = private)
-        
+
         function updatePlotsAndCalculations(app)
             plot(app.AxesFullData, app.times, app.val(:,1), 'k')
             hold(app.AxesFullData, 'on')
@@ -62,7 +67,7 @@ classdef GUI1 < matlab.apps.AppBase
             app.TimeField.Value=(app.times(app.Slider_2.Value)-app.times(app.Slider.Value))/1000;
             plot(app.AxesChosenData, app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,1))
             plot(app.AxesVoltages, app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,2:3))
-            
+
             if app.val(1, 4)
                 hold(app.AxesVoltages, 'on')
                 plot(app.AxesVoltages, app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,4)/102)
@@ -84,7 +89,7 @@ classdef GUI1 < matlab.apps.AppBase
             app.AvgPowerVmaxField.Value=app.EnergyVmaxField.Value/app.TimeField.Value*3600;
         end
     end
-    
+
 
     % Callbacks that handle component events
     methods (Access = private)
@@ -136,10 +141,21 @@ classdef GUI1 < matlab.apps.AppBase
 
         % Button pushed function: StabilisedVoltagesButton
         function StabilisedVoltagesButtonPushed(app, event)
+            %This button will try to show voltages, but offset by the
+            %voltage lost on the internal resistance. Was an experiment to
+            %see what is the real internal resistance
             hold(app.AxesVoltages, 'on')
-            akuResistance=app.CellResistancemOEditField.Value/1000/17;
+            akuResistance=app.CellResistancemOEditField.Value/1000*17;
             plot(app.AxesVoltages, app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,2:3)+app.val(app.Slider.Value:app.Slider_2.Value,1)*akuResistance);
             hold(app.AxesVoltages, 'off')
+        end
+
+        % Button pushed function: CalculateProducedHeatButton
+        function CalculateProducedHeatButtonPushed(app, event)
+            %This will calculate heat W=P*t=I²R*t
+            akuResistance=app.CellResistancemOEditField.Value/1000*17;
+            app.ProducedHeatField.Value=calculateHeat(app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,1), akuResistance);
+            app.ProducedHeatFieldW.Value=app.ProducedHeatField.Value/app.TimeField.Value;
         end
     end
 
@@ -154,6 +170,30 @@ classdef GUI1 < matlab.apps.AppBase
             app.UIFigure.Position = [100 100 1000 720];
             app.UIFigure.Name = 'MATLAB App';
             app.UIFigure.Pointer = 'crosshair';
+
+            % Create AxesFullData
+            app.AxesFullData = uiaxes(app.UIFigure);
+            title(app.AxesFullData, 'Current - all data points')
+            xlabel(app.AxesFullData, 'Time [ms]')
+            ylabel(app.AxesFullData, '[A]')
+            zlabel(app.AxesFullData, 'Z')
+            app.AxesFullData.Position = [501 511 500 210];
+
+            % Create AxesChosenData
+            app.AxesChosenData = uiaxes(app.UIFigure);
+            title(app.AxesChosenData, 'Current')
+            xlabel(app.AxesChosenData, 'Time [ms]')
+            ylabel(app.AxesChosenData, '[A]')
+            zlabel(app.AxesChosenData, 'Z')
+            app.AxesChosenData.Position = [501 1 500 400];
+
+            % Create AxesVoltages
+            app.AxesVoltages = uiaxes(app.UIFigure);
+            title(app.AxesVoltages, 'Voltages')
+            xlabel(app.AxesVoltages, 'Time [ms]')
+            ylabel(app.AxesVoltages, '[V]')
+            zlabel(app.AxesVoltages, 'Z')
+            app.AxesVoltages.Position = [1 1 500 400];
 
             % Create SliderLabel
             app.SliderLabel = uilabel(app.UIFigure);
@@ -392,29 +432,38 @@ classdef GUI1 < matlab.apps.AppBase
             app.RecoveredWhVMaxField.FontColor = [0.4667 0.6745 0.1882];
             app.RecoveredWhVMaxField.Position = [427 559 54 22];
 
-            % Create AxesFullData
-            app.AxesFullData = uiaxes(app.UIFigure);
-            title(app.AxesFullData, 'Current - all data points')
-            xlabel(app.AxesFullData, 'Time [ms]')
-            ylabel(app.AxesFullData, '[A]')
-            zlabel(app.AxesFullData, 'Z')
-            app.AxesFullData.Position = [501 511 500 210];
+            % Create CalculateProducedHeatButton
+            app.CalculateProducedHeatButton = uibutton(app.UIFigure, 'push');
+            app.CalculateProducedHeatButton.ButtonPushedFcn = createCallbackFcn(app, @CalculateProducedHeatButtonPushed, true);
+            app.CalculateProducedHeatButton.FontColor = [0.502 0.502 0.502];
+            app.CalculateProducedHeatButton.Position = [330 618 100 25];
+            app.CalculateProducedHeatButton.Text = 'Calculate Heat';
 
-            % Create AxesChosenData
-            app.AxesChosenData = uiaxes(app.UIFigure);
-            title(app.AxesChosenData, 'Current')
-            xlabel(app.AxesChosenData, 'Time [ms]')
-            ylabel(app.AxesChosenData, '[A]')
-            zlabel(app.AxesChosenData, 'Z')
-            app.AxesChosenData.Position = [501 1 500 400];
+            % Create HeatJLabel
+            app.HeatJLabel = uilabel(app.UIFigure);
+            app.HeatJLabel.FontColor = [0.4941 0.1843 0.5569];
+            app.HeatJLabel.Position = [326 528 48 22];
+            app.HeatJLabel.Text = 'Heat [J]';
 
-            % Create AxesVoltages
-            app.AxesVoltages = uiaxes(app.UIFigure);
-            title(app.AxesVoltages, 'Voltages')
-            xlabel(app.AxesVoltages, 'Time [ms]')
-            ylabel(app.AxesVoltages, '[V]')
-            zlabel(app.AxesVoltages, 'Z')
-            app.AxesVoltages.Position = [1 1 500 400];
+            % Create ProducedHeatField
+            app.ProducedHeatField = uieditfield(app.UIFigure, 'numeric');
+            app.ProducedHeatField.ValueDisplayFormat = '%7.2f';
+            app.ProducedHeatField.Editable = 'off';
+            app.ProducedHeatField.FontColor = [0.4941 0.1843 0.5569];
+            app.ProducedHeatField.Position = [427 528 54 22];
+
+            % Create HeatWLabel
+            app.HeatWLabel = uilabel(app.UIFigure);
+            app.HeatWLabel.FontColor = [0.4941 0.1843 0.5569];
+            app.HeatWLabel.Position = [326 500 53 22];
+            app.HeatWLabel.Text = 'Heat [W]';
+
+            % Create ProducedHeatFieldW
+            app.ProducedHeatFieldW = uieditfield(app.UIFigure, 'numeric');
+            app.ProducedHeatFieldW.ValueDisplayFormat = '%7.2f';
+            app.ProducedHeatFieldW.Editable = 'off';
+            app.ProducedHeatFieldW.FontColor = [0.4941 0.1843 0.5569];
+            app.ProducedHeatFieldW.Position = [425 500 54 22];
 
             % Show the figure after all components are created
             app.UIFigure.Visible = 'on';
