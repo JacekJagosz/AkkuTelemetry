@@ -1,4 +1,5 @@
 # AkkuTelemetry
+The `CodeFromGui.m` doesn't serve any purpose apart from being able to see the code of the GUI and being able to track changes with Git, so if you want to see the bulk of the code, go there.
 How latest version of my GUI looks like:
 ![image](https://user-images.githubusercontent.com/28653965/180667979-d10dc042-73b9-49c8-9be2-f0741da06945.png)
 I wrote an instruction, only in Polish for now. The GUI will only be useful for my teammembers of AGH Racing anyways, and only for our type of writing telemetry:

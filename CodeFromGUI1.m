@@ -55,11 +55,15 @@ classdef GUI1 < matlab.apps.AppBase
         sFolderPath%='/home/jacek/Dokumenty/Matlab/Testy LEM MotoPark/lem_logi_motopark_30102020/20201030_092123662678_decoded' % Initial value set for quick testing on my PC only
         val % contains values read from sensors and converted to double, in order of filenamesToRead
         times % time of each datapoint, converted to miliseconds
+        %accumulator configuration:
+        SERIES = 102;
+        PARALLEL = 6;
     end
 
     methods (Access = private)
 
         function updatePlotsAndCalculations(app)
+            %Calculate based on max and min cell voltages from BMS
             plot(app.AxesFullData, app.times, app.val(:,1), 'k')
             hold(app.AxesFullData, 'on')
             plot(app.AxesFullData, app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,1))
@@ -68,24 +72,27 @@ classdef GUI1 < matlab.apps.AppBase
             plot(app.AxesChosenData, app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,1))
             plot(app.AxesVoltages, app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,2:3))
 
+            %In some of our telemetries the total voltage sensor was
+            %missing, so those values won't be calculated if it is in fact
+            %reading zero
             if app.val(1, 4)
                 hold(app.AxesVoltages, 'on')
-                plot(app.AxesVoltages, app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,4)/102)
+                plot(app.AxesVoltages, app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,4)/app.SERIES)
                 hold(app.AxesVoltages, 'off')
                 [wv, pv, rv]=calculateEnergy(app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,1), app.val(app.Slider.Value:app.Slider_2.Value,4));
                 app.EnergyVolField.Value=wv;
                 app.PeakPowerVolField.Value=pv;
-                app.RecoveredWhVolField.Value=102*rv;
+                app.RecoveredWhVolField.Value=app.SERIES*rv;
                 app.AvgPowerVolField.Value=app.EnergyVolField.Value/app.TimeField.Value*3600;
             end
             %calculate energies
             [app.AhField.Value, app.MaxAField.Value]=calculateCurrent(app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,1));
             app.MaxVField.Value=max(app.val(app.Slider.Value:app.Slider_2.Value, 2));
-            app.AhMaxVWhField.Value=app.AhField.Value*app.MaxVField.Value*102;
+            app.AhMaxVWhField.Value=app.AhField.Value*app.MaxVField.Value*app.SERIES;
             [wm, pm, rm]=calculateEnergy(app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,1), app.val(app.Slider.Value:app.Slider_2.Value,2));
-            app.EnergyVmaxField.Value=102*wm;
-            app.PeakPowerVmaxField.Value=102*pm;
-            app.RecoveredWhVMaxField.Value=102*rm;
+            app.EnergyVmaxField.Value=app.SERIES*wm;
+            app.PeakPowerVmaxField.Value=app.SERIES*pm;
+            app.RecoveredWhVMaxField.Value=app.SERIES*rm;
             app.AvgPowerVmaxField.Value=app.EnergyVmaxField.Value/app.TimeField.Value*3600;
         end
     end
@@ -145,15 +152,15 @@ classdef GUI1 < matlab.apps.AppBase
             %voltage lost on the internal resistance. Was an experiment to
             %see what is the real internal resistance
             hold(app.AxesVoltages, 'on')
-            akuResistance=app.CellResistancemOEditField.Value/1000*17;
-            plot(app.AxesVoltages, app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,2:3)+app.val(app.Slider.Value:app.Slider_2.Value,1)*akuResistance);
+            %akuResistance=app.CellResistancemOEditField.Value/1000*17;
+            plot(app.AxesVoltages, app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,2)+app.val(app.Slider.Value:app.Slider_2.Value,1)*app.CellResistancemOEditField.Value/1000/6);
             hold(app.AxesVoltages, 'off')
         end
 
         % Button pushed function: CalculateProducedHeatButton
         function CalculateProducedHeatButtonPushed(app, event)
             %This will calculate heat W=P*t=I²R*t
-            akuResistance=app.CellResistancemOEditField.Value/1000*17;
+            akuResistance=app.CellResistancemOEditField.Value/1000*app.SERIES/app.PARALLEL;
             app.ProducedHeatField.Value=calculateHeat(app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,1), akuResistance);
             app.ProducedHeatFieldW.Value=app.ProducedHeatField.Value/app.TimeField.Value;
         end
