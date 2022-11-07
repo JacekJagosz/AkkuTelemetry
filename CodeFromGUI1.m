@@ -1,4 +1,4 @@
-classdef GUI1 < matlab.apps.AppBase
+classdef CodeFromGUI1 < matlab.apps.AppBase
 
     % Properties that correspond to app components
     properties (Access = public)
@@ -49,7 +49,7 @@ classdef GUI1 < matlab.apps.AppBase
         AxesFullData                    matlab.ui.control.UIAxes
     end
 
-
+    
     properties (Access = private)
         filenamesToRead = ["_TEL_HVBMS_CURR.txt", "_TEL_HVBMS_MAXCVOLT.txt", "_TEL_HVBMS_MINCVOLT.txt", "_TEL_HVBMS_VOLT.txt"]% Files with what endings that need to be read, in that order
         sFolderPath%='/home/jacek/Dokumenty/Matlab/Testy LEM MotoPark/lem_logi_motopark_30102020/20201030_092123662678_decoded' % Initial value set for quick testing on my PC only
@@ -59,9 +59,9 @@ classdef GUI1 < matlab.apps.AppBase
         SERIES = 102;
         PARALLEL = 6;
     end
-
+    
     methods (Access = private)
-
+        
         function updatePlotsAndCalculations(app)
             %Calculate based on max and min cell voltages from BMS
             plot(app.AxesFullData, app.times, app.val(:,1), 'k')
@@ -71,7 +71,7 @@ classdef GUI1 < matlab.apps.AppBase
             app.TimeField.Value=(app.times(app.Slider_2.Value)-app.times(app.Slider.Value))/1000;
             plot(app.AxesChosenData, app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,1))
             plot(app.AxesVoltages, app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,2:3))
-
+            
             %In some of our telemetries the total voltage sensor was
             %missing, so those values won't be calculated if it is in fact
             %reading zero
@@ -96,7 +96,7 @@ classdef GUI1 < matlab.apps.AppBase
             app.AvgPowerVmaxField.Value=app.EnergyVmaxField.Value/app.TimeField.Value*3600;
         end
     end
-
+    
 
     % Callbacks that handle component events
     methods (Access = private)
@@ -481,7 +481,7 @@ classdef GUI1 < matlab.apps.AppBase
     methods (Access = public)
 
         % Construct app
-        function app = GUI1
+        function app = CodeFromGUI1
 
             % Create UIFigure and components
             createComponents(app)
