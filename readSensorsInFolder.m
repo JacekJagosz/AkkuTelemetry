@@ -24,8 +24,9 @@ function [oTimestamp, times, v]=readSensorsInFolder(filenamesToRead, sFolderPath
     end
     %our latest BMS master sometimes sends garbagge CURR data. So let's at
     %least delete clearly impossible data points
+    %peaks only have certain values, we can filter out those specific ones
     for i=1:length(oTimestamp)
-        if v(i,1) > 200
+        if v(i,1) > 200 || v(i,1) == 65.5
             v(i,1) = v(i-1,1);
         end
     end

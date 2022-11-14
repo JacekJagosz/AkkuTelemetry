@@ -75,7 +75,7 @@ classdef CodeFromGUI1 < matlab.apps.AppBase
             %In some of our telemetries the total voltage sensor was
             %missing, so those values won't be calculated if it is in fact
             %reading zero
-            if app.val(1, 4)
+            %if app.val(1, 4)
                 hold(app.AxesVoltages, 'on')
                 plot(app.AxesVoltages, app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,4)/app.SERIES)
                 hold(app.AxesVoltages, 'off')
@@ -84,7 +84,7 @@ classdef CodeFromGUI1 < matlab.apps.AppBase
                 app.PeakPowerVolField.Value=pv;
                 app.RecoveredWhVolField.Value=app.SERIES*rv;
                 app.AvgPowerVolField.Value=app.EnergyVolField.Value/app.TimeField.Value*3600;
-            end
+            %end
             %calculate energies
             [app.AhField.Value, app.MaxAField.Value]=calculateCurrent(app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,1));
             app.MaxVField.Value=max(app.val(app.Slider.Value:app.Slider_2.Value, 2));
