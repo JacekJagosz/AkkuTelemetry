@@ -69,7 +69,10 @@ classdef CodeFromGUI1 < matlab.apps.AppBase
             plot(app.AxesFullData, app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,1))
             hold(app.AxesFullData, 'off')
             app.TimeField.Value=(app.times(app.Slider_2.Value)-app.times(app.Slider.Value))/1000;
+            hold(app.AxesChosenData, 'on')
             plot(app.AxesChosenData, app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,1))
+            plot(app.AxesChosenData, app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,1).*app.val(app.Slider.Value:app.Slider_2.Value,4)/1000)
+            hold(app.AxesChosenData, 'off')
             plot(app.AxesVoltages, app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,2:3))
             
             %In some of our telemetries the total voltage sensor was
@@ -188,9 +191,9 @@ classdef CodeFromGUI1 < matlab.apps.AppBase
 
             % Create AxesChosenData
             app.AxesChosenData = uiaxes(app.UIFigure);
-            title(app.AxesChosenData, 'Current')
+            title(app.AxesChosenData, 'Current + Power')
             xlabel(app.AxesChosenData, 'Time [ms]')
-            ylabel(app.AxesChosenData, '[A]')
+            ylabel(app.AxesChosenData, '[A] or [kW]')
             zlabel(app.AxesChosenData, 'Z')
             app.AxesChosenData.Position = [501 1 500 400];
 
