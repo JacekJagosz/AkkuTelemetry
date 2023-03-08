@@ -69,10 +69,13 @@ classdef CodeFromGUI1 < matlab.apps.AppBase
             plot(app.AxesFullData, app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,1))
             hold(app.AxesFullData, 'off')
             app.TimeField.Value=(app.times(app.Slider_2.Value)-app.times(app.Slider.Value))/1000;
-            hold(app.AxesChosenData, 'on')
             plot(app.AxesChosenData, app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,1))
+            hold(app.AxesChosenData, 'on')
             plot(app.AxesChosenData, app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,1).*app.val(app.Slider.Value:app.Slider_2.Value,4)/1000)
             hold(app.AxesChosenData, 'off')
+
+            cla(app.AxesVoltages, 'reset')
+            %yyaxis(app.AxesVoltages,'left')
             plot(app.AxesVoltages, app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,2:3))
             
             %In some of our telemetries the total voltage sensor was
@@ -154,10 +157,20 @@ classdef CodeFromGUI1 < matlab.apps.AppBase
             %This button will try to show voltages, but offset by the
             %voltage lost on the internal resistance. Was an experiment to
             %see what is the real internal resistance
+            %yyaxis(app.AxesVoltages,'left')
+            %redraw the plot to clear previous stabilised values
+            plot(app.AxesVoltages, app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,2:3))
             hold(app.AxesVoltages, 'on')
+            plot(app.AxesVoltages, app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,4)/app.SERIES)
+
             %akuResistance=app.CellResistancemOEditField.Value/1000*17;
-            plot(app.AxesVoltages, app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,2)+app.val(app.Slider.Value:app.Slider_2.Value,1)*app.CellResistancemOEditField.Value/1000/6);
+            plot(app.AxesVoltages, app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,4)/app.SERIES+app.val(app.Slider.Value:app.Slider_2.Value,1)*app.CellResistancemOEditField.Value/1000/app.PARALLEL);
             hold(app.AxesVoltages, 'off')
+
+            %calculate SoC
+            [calculatedTimes, soc] = calculateSoC(app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,4)/app.SERIES, app.val(app.Slider.Value:app.Slider_2.Value,1), app.CellResistancemOEditField.Value/1000/app.PARALLEL);
+            yyaxis(app.AxesVoltages,'right')
+            plot(app.AxesVoltages, calculatedTimes, soc)
         end
 
         % Button pushed function: CalculateProducedHeatButton
