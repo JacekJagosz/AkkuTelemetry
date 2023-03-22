@@ -3,7 +3,7 @@ function [oTimestamp, times, v]=readSensorsInFolder(filenamesToRead, sFolderPath
     %sFolderPath='/home/jacek/Dokumenty/Matlab/Testy LEM MotoPark/lem_logi_motopark_30102020/20201030_100139001723_decoded';
     firstFileName = erase(sFolderPath, '_decoded');
     %get first part of folder name
-    firstFileName = reverse(extractBetween(reverse(firstFileName), 1, filesep)) %filesep returns '/' on Linux and '\' on Windows
+    firstFileName = reverse(extractBetween(reverse(firstFileName), 1, filesep)); %filesep returns '/' on Linux and '\' on Windows
     %filenamesToRead %check if it was passed correctly
     %strcat(sFolderPath, filesep, firstFileName, filenamesToRead(1)) %check if file path was stripped correctly
     for i=1:length(filenamesToRead)

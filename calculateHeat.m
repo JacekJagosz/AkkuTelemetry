@@ -5,6 +5,5 @@ function w=calculateHeat(times, curr, R)
         temp=curr(i)*curr(i)*R;
         w=w+temp*dt;
     end
-    w=w
     %w=w/3600;
 end
