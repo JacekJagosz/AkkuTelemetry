@@ -159,6 +159,7 @@ classdef CodeFromGUI1 < matlab.apps.AppBase
             %see what is the real internal resistance
             %yyaxis(app.AxesVoltages,'left')
             %redraw the plot to clear previous stabilised values
+            cla(app.AxesVoltages, 'reset')
             plot(app.AxesVoltages, app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,2:3))
             hold(app.AxesVoltages, 'on')
             plot(app.AxesVoltages, app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,4)/app.SERIES)
@@ -176,9 +177,10 @@ classdef CodeFromGUI1 < matlab.apps.AppBase
         % Button pushed function: CalculateProducedHeatButton
         function CalculateProducedHeatButtonPushed(app, event)
             %This will calculate heat W=P*t=I²R*t
-            akuResistance=app.CellResistancemOEditField.Value/1000*app.SERIES/app.PARALLEL;
-            app.ProducedHeatField.Value=calculateHeat(app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,1), akuResistance);
-            app.ProducedHeatFieldW.Value=app.ProducedHeatField.Value/app.TimeField.Value;
+            akuResistance = app.CellResistancemOEditField.Value/1000*app.SERIES/app.PARALLEL;
+            producedHeat = calculateHeat(app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,1), akuResistance);
+            app.ProducedHeatField.Value = producedHeat/3600;
+            app.ProducedHeatFieldW.Value = producedHeat/app.TimeField.Value;
         end
     end
 
@@ -439,7 +441,7 @@ classdef CodeFromGUI1 < matlab.apps.AppBase
             app.RecoveredWhVolField.ValueDisplayFormat = '%7.2f';
             app.RecoveredWhVolField.Editable = 'off';
             app.RecoveredWhVolField.FontColor = [0.4667 0.6745 0.1882];
-            app.RecoveredWhVolField.Position = [427 469 54 22];
+            app.RecoveredWhVolField.Position = [425 469 56 22];
 
             % Create RecoveredWhEditFieldLabel_4
             app.RecoveredWhEditFieldLabel_4 = uilabel(app.UIFigure);
@@ -453,7 +455,7 @@ classdef CodeFromGUI1 < matlab.apps.AppBase
             app.RecoveredWhVMaxField.ValueDisplayFormat = '%7.2f';
             app.RecoveredWhVMaxField.Editable = 'off';
             app.RecoveredWhVMaxField.FontColor = [0.4667 0.6745 0.1882];
-            app.RecoveredWhVMaxField.Position = [427 559 54 22];
+            app.RecoveredWhVMaxField.Position = [425 559 56 22];
 
             % Create CalculateProducedHeatButton
             app.CalculateProducedHeatButton = uibutton(app.UIFigure, 'push');
@@ -465,15 +467,15 @@ classdef CodeFromGUI1 < matlab.apps.AppBase
             % Create HeatJLabel
             app.HeatJLabel = uilabel(app.UIFigure);
             app.HeatJLabel.FontColor = [0.4941 0.1843 0.5569];
-            app.HeatJLabel.Position = [326 528 48 22];
-            app.HeatJLabel.Text = 'Heat [J]';
+            app.HeatJLabel.Position = [326 528 60 22];
+            app.HeatJLabel.Text = 'Heat [Wh]';
 
             % Create ProducedHeatField
             app.ProducedHeatField = uieditfield(app.UIFigure, 'numeric');
             app.ProducedHeatField.ValueDisplayFormat = '%7.2f';
             app.ProducedHeatField.Editable = 'off';
             app.ProducedHeatField.FontColor = [0.4941 0.1843 0.5569];
-            app.ProducedHeatField.Position = [427 528 54 22];
+            app.ProducedHeatField.Position = [425 528 56 22];
 
             % Create HeatWLabel
             app.HeatWLabel = uilabel(app.UIFigure);
