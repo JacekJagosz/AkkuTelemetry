@@ -1,5 +1,6 @@
-function [calculatedTimes, soc] = calculateSoC(times, volt, curr, parallelResistance)
-%CALCULATESOC Summary of this function goes here
+function [calculatedTimes, soc] = calculateSoC(times, volt, curr, parallelResistance, series, parallel)
+%Function for calculating SoC based on a lookup table and stabilised
+%voltage (with offset for voltage drop on the battery resistance)
 %   Detailed explanation goes here
 step = 250; %multiply by 20ms to get how often the value will get returned
 len = length(times);
@@ -7,13 +8,10 @@ soc_percent = [100, 98.05, 92.58, 79.27, 73.9, 69.25, 64.5, 59.6, 52, 46, 40.75,
 soc_voltages = 4.2:-0.05:2.5;
 
 calculatedTimes = times(1:step:(len-step));
-stabilisedVoltages = volt(1:len) + curr(1:len)*parallelResistance;  
-fix(len/step)
+stabilisedVoltages = volt(1:len)/series + curr(1:len)*parallelResistance/parallel;  
 soc = zeros(1, length(calculatedTimes));
 for i=1:step:(len-step)
     medianSVolt = median(stabilisedVoltages(i:i+step));
     soc(fix(i/step)+1) = interp1(soc_voltages, soc_percent, medianSVolt);
 end
-length(calculatedTimes)
-length(soc)
 end

@@ -166,12 +166,14 @@ classdef CodeFromGUI1 < matlab.apps.AppBase
 
             %akuResistance=app.CellResistancemOEditField.Value/1000*17;
             plot(app.AxesVoltages, app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,4)/app.SERIES+app.val(app.Slider.Value:app.Slider_2.Value,1)*app.CellResistancemOEditField.Value/1000/app.PARALLEL);
-            hold(app.AxesVoltages, 'off')
 
-            %calculate SoC
-            [calculatedTimes, soc] = calculateSoC(app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,4)/app.SERIES, app.val(app.Slider.Value:app.Slider_2.Value,1), app.CellResistancemOEditField.Value/1000/app.PARALLEL);
+            %calculate SoCs
+            [calculatedTimes, soc] = calculateSoC(app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,4), app.val(app.Slider.Value:app.Slider_2.Value,1), app.CellResistancemOEditField.Value/1000, app.SERIES, app.PARALLEL);
+            [calculatedTimesEnergy, socEnergy] = calculateSoCEnergy(app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,4), app.val(app.Slider.Value:app.Slider_2.Value,1), app.CellResistancemOEditField.Value/1000, app.SERIES, app.PARALLEL);
             yyaxis(app.AxesVoltages,'right')
             plot(app.AxesVoltages, calculatedTimes, soc)
+            plot(app.AxesVoltages, calculatedTimesEnergy, socEnergy)
+            hold(app.AxesVoltages, 'off')
         end
 
         % Button pushed function: CalculateProducedHeatButton
