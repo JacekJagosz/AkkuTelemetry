@@ -4,7 +4,7 @@ function [calculatedTimes, soc] = calculateSoCEnergy(times, volt, curr, parallel
 len = length(times);
 soc_percent = [100, 98.05, 92.58, 79.27, 73.9, 69.25, 64.5, 59.6, 52, 46, 40.75, 35.9, 31.6, 28.2, 22.4, 18.75, 15.9, 13.55, 11.65, 10, 8.35, 6.65, 5.2, 4.05, 3.2, 2.5, 2, 1.55, 1.22, 0.95, 0.71, 0.5, 0.32, 0.15, 0];
 soc_voltages = 4.2:-0.05:2.5;
-pack_energy = 10.8 * 612; %Wh
+pack_energy = 7.5 * 612; %Wh #10.8Wh for 0.1A, 10A by datasheet 9.2Wh, for 15A from testing 7.03Wh
 remaining_energy = zeros(1, len);
 remaining_energy(1) = interp1(soc_voltages, soc_percent, volt(1)/series) /100.0 * pack_energy;
 

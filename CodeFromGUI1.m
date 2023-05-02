@@ -3,6 +3,7 @@ classdef CodeFromGUI1 < matlab.apps.AppBase
     % Properties that correspond to app components
     properties (Access = public)
         UIFigure                        matlab.ui.Figure
+        CalculateSoC                    matlab.ui.control.Button
         ProducedHeatFieldW              matlab.ui.control.NumericEditField
         HeatWLabel                      matlab.ui.control.Label
         ProducedHeatField               matlab.ui.control.NumericEditField
@@ -167,13 +168,14 @@ classdef CodeFromGUI1 < matlab.apps.AppBase
             %akuResistance=app.CellResistancemOEditField.Value/1000*17;
             plot(app.AxesVoltages, app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,4)/app.SERIES+app.val(app.Slider.Value:app.Slider_2.Value,1)*app.CellResistancemOEditField.Value/1000/app.PARALLEL);
 
-            %calculate SoCs
-            [calculatedTimes, soc] = calculateSoC(app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,4), app.val(app.Slider.Value:app.Slider_2.Value,1), app.CellResistancemOEditField.Value/1000, app.SERIES, app.PARALLEL);
-            [calculatedTimesEnergy, socEnergy] = calculateSoCEnergy(app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,4), app.val(app.Slider.Value:app.Slider_2.Value,1), app.CellResistancemOEditField.Value/1000, app.SERIES, app.PARALLEL);
-            yyaxis(app.AxesVoltages,'right')
-            plot(app.AxesVoltages, calculatedTimes, soc)
-            plot(app.AxesVoltages, calculatedTimesEnergy, socEnergy)
+            [calculatedTimes, medianSVolt, ampLimit] = calculateSafePwrLimit(app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,4), app.val(app.Slider.Value:app.Slider_2.Value,1), app.CellResistancemOEditField.Value/1000, app.SERIES, app.PARALLEL);
+            plot(app.AxesVoltages, calculatedTimes, medianSVolt)
             hold(app.AxesVoltages, 'off')
+
+            %display amp limit
+            hold(app.AxesChosenData, 'on')
+            plot(app.AxesChosenData, calculatedTimes, ampLimit)
+            hold(app.AxesChosenData, 'off')
         end
 
         % Button pushed function: CalculateProducedHeatButton
@@ -183,6 +185,23 @@ classdef CodeFromGUI1 < matlab.apps.AppBase
             producedHeat = calculateHeat(app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,1), akuResistance);
             app.ProducedHeatField.Value = producedHeat/3600;
             app.ProducedHeatFieldW.Value = producedHeat/app.TimeField.Value;
+        end
+
+        % Button pushed function: CalculateSoC
+        function CalculateSoCButtonPushed(app, event)
+            %This button will show SoC calculated using 2 methods
+            cla(app.AxesVoltages, 'reset')
+            plot(app.AxesVoltages, app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,2:3))
+            hold(app.AxesVoltages, 'on')
+            plot(app.AxesVoltages, app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,4)/app.SERIES)
+            
+            %calculate SoCs
+            [calculatedTimes, soc] = calculateSoC(app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,4), app.val(app.Slider.Value:app.Slider_2.Value,1), app.CellResistancemOEditField.Value/1000, app.SERIES, app.PARALLEL);
+            [calculatedTimesEnergy, socEnergy] = calculateSoCEnergy(app.times(app.Slider.Value:app.Slider_2.Value), app.val(app.Slider.Value:app.Slider_2.Value,4), app.val(app.Slider.Value:app.Slider_2.Value,1), app.CellResistancemOEditField.Value/1000, app.SERIES, app.PARALLEL);
+            yyaxis(app.AxesVoltages,'right')
+            plot(app.AxesVoltages, calculatedTimes, soc)
+            plot(app.AxesVoltages, calculatedTimesEnergy, socEnergy)
+            hold(app.AxesVoltages, 'off')
         end
     end
 
@@ -429,7 +448,7 @@ classdef CodeFromGUI1 < matlab.apps.AppBase
             app.CellResistancemOEditField = uieditfield(app.UIFigure, 'numeric');
             app.CellResistancemOEditField.FontColor = [0.502 0.502 0.502];
             app.CellResistancemOEditField.Position = [241 649 50 22];
-            app.CellResistancemOEditField.Value = 30;
+            app.CellResistancemOEditField.Value = 16;
 
             % Create RecoveredWhEditFieldLabel_3
             app.RecoveredWhEditFieldLabel_3 = uilabel(app.UIFigure);
@@ -491,6 +510,13 @@ classdef CodeFromGUI1 < matlab.apps.AppBase
             app.ProducedHeatFieldW.Editable = 'off';
             app.ProducedHeatFieldW.FontColor = [0.4941 0.1843 0.5569];
             app.ProducedHeatFieldW.Position = [425 500 54 22];
+
+            % Create CalculateSoC
+            app.CalculateSoC = uibutton(app.UIFigure, 'push');
+            app.CalculateSoC.ButtonPushedFcn = createCallbackFcn(app, @CalculateSoCButtonPushed, true);
+            app.CalculateSoC.FontColor = [0.502 0.502 0.502];
+            app.CalculateSoC.Position = [330 588 100 25];
+            app.CalculateSoC.Text = 'Calculate SoC';
 
             % Show the figure after all components are created
             app.UIFigure.Visible = 'on';
